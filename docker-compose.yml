@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+    db:
+        image: postgres:latest
+        volumes:
+            - ./data/db:/var/lib/postgres
+        environment:
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "12345"
+            POSTGRES_DB: "tested"
+        ports:
+            - 5432:5432
+        networks:
+            - symfony
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+            args:
+                TIMEZONE: ${TIMEZONE}
+        volumes:
+            - ./:/var/www/symfony/
+        networks:
+            - symfony
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        volumes:
+            - ./:/var/www/symfony/
+        ports:
+            - 80:80
+        networks:
+            - symfony
+
+networks:
+    symfony:

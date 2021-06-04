@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Form page{% endblock %}
+
+{% block stylesheets %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <h5 class="card-header">Add number</h5>
+            <div class="card-body">
+                {{ form_start(form, {'method': 'POST'}) }}
+                <div class="form-errors">
+                    {{ form_errors(form) }}
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3">
+                    {{ form_label(form.number, 'Number') }}
+                    {{ form_widget(form.number, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3">
+                    {{ form_widget(form.save, { 'attr': {'class': 'btn btn-dark'}, 'label': 'Save number' }) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">Codes</h5>
+            <div class="card-body">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Correct</th>
+                        <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for code in codes %}
+                            <tr>
+                            <th scope="row">{{ code.getId() }}</th>
+                            <td>{{ code.getNumber() }}</td>
+                            <td>{{ code.getIsCorrect() ? "true":"false" }}</td>
+                            <td>{{ code.getAddedDate()|date("d/m/Y h:i:s") }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+
+{% endblock %}
